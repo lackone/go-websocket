@@ -81,13 +81,13 @@ func (c *Client) DelGroup(groups ...string) {
 func (c *Client) SendMsg(msg []byte) error {
 	defer func() {
 		if err := recover(); err != nil {
-			Log.Error(context.Background(), "SendMsg Panic", err)
+			Log.Error(context.Background(), "SendMsg Panic ", err)
 		}
 	}()
 
 	res, err := c.clientManage.resFormatFn(c, msg)
 	if err != nil {
-		Log.Error(context.Background(), "resFormatFn Error", err)
+		Log.Error(context.Background(), "resFormatFn Error ", err)
 		return err
 	}
 
@@ -98,13 +98,13 @@ func (c *Client) SendMsg(msg []byte) error {
 func (c *Client) SendResponse(res IResponse) error {
 	defer func() {
 		if err := recover(); err != nil {
-			Log.Error(context.Background(), "SendResponse Panic", err)
+			Log.Error(context.Background(), "SendResponse Panic ", err)
 		}
 	}()
 
 	bytes, err := res.GetBytes()
 	if err != nil {
-		Log.Error(context.Background(), "GetBytes Error", err)
+		Log.Error(context.Background(), "GetBytes Error ", err)
 		return err
 	}
 
@@ -119,7 +119,7 @@ func (c *Client) SendResponse(res IResponse) error {
 func (c *Client) ReadLoop() {
 	defer func() {
 		if err := recover(); err != nil {
-			Log.Error(context.Background(), "ReadLoop Panic", err)
+			Log.Error(context.Background(), "ReadLoop Panic ", err)
 		}
 	}()
 
@@ -139,7 +139,7 @@ func (c *Client) ReadLoop() {
 		_, msg, err := c.conn.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				Log.Error(context.Background(), "ReadMessage Error", err)
+				Log.Error(context.Background(), "ReadMessage Error ", err)
 			}
 			return
 		}
@@ -150,7 +150,7 @@ func (c *Client) ReadLoop() {
 
 		err = c.ProcessMessage(msg)
 		if err != nil {
-			Log.Error(context.Background(), "ProcessMessage Error", err)
+			Log.Error(context.Background(), "ProcessMessage Error ", err)
 		}
 	}
 }
@@ -179,7 +179,7 @@ func (c *Client) ProcessMessage(msg []byte) error {
 func (c *Client) WriteLoop() {
 	defer func() {
 		if err := recover(); err != nil {
-			Log.Error(context.Background(), "WriteLoop Panic", err)
+			Log.Error(context.Background(), "WriteLoop Panic ", err)
 		}
 	}()
 
